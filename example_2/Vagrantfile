@@ -1,0 +1,45 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  # Configuration for vm01
+  config.vm.define "vm01" do |vm01|
+    vm01.vm.box = "bento/ubuntu-20.04"
+    vm01.vm.hostname = "vm01"
+    vm01.vm.network "private_network", ip: "192.168.33.10"
+    vm01.vm.provider "virtualbox" do |vb|
+      vb.name = "Cloud-W0-example2-vm01"
+      vb.memory = "1024"
+      vb.cpus = 2
+      vb.customize ["modifyvm", :id, "--vram", "128"]
+      vb.linked_clone = true
+    end
+
+    # Provision block for vm01 only
+    vm01.vm.provision "shell", inline: "echo -e '\033[41mHello from vm01!\033[0m'"
+  end
+
+  # Configuration for vm02
+  config.vm.define "vm02" do |vm02|
+    vm02.vm.box = "bento/ubuntu-20.04"
+    vm02.vm.hostname = "vm02"
+    vm02.vm.network "private_network", ip: "192.168.33.20"
+    vm02.vm.provider "virtualbox" do |vb|
+      vb.name = "Cloud-W0-example2-vm02"
+      vb.memory = "1024"
+      vb.cpus = 2
+      vb.customize ["modifyvm", :id, "--vram", "128"]
+      vb.linked_clone = true
+    end
+
+    # Provision block for vm02 only using a shell script
+    vm02.vm.provision "shell", path: "./hello.sh", privileged: false
+  end
+  
+  # Provision block for both vms
+  config.vm.provision "shell", run: "always", inline: <<-RANDOMWORD
+    echo -e "\033[42mHello from both vms! I am $(hostname)!\033[0m"
+  RANDOMWORD
+  
+end
