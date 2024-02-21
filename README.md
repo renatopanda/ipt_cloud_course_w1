@@ -3,9 +3,13 @@
 This repository contains a set of examples used in class to illustrate what is vagrant and how to use it.
 
 ## Known issues and fixes
-Under Win10/11 there seems to be some issues with vagrant+VirtualBox. Namely, the VM will timeout during the `vagrant up` / `SSH auth method: private key` instruction. There is no clear solution to this, some reports point to the Microsoft Hyper-V and WSL2 conflicting with VirtualBox, others suggest adding cpus and other VM configs.
+Under Win10/11 there seems to be some issues with vagrant+VirtualBox.
 
-In my case, the solution is actually [**_quite simple and stupid_**](https://github.com/hashicorp/vagrant/issues/11987#issuecomment-777256616) - when a VM is starting, **just make sure you select that specific VM under the VirtualBox GUI** (see the image below, click / select the VM currently hanging - in red, you should also see some activity under the preview screen - green).
+Namely, the VM will timeout during the `vagrant up` process, normally under the `SSH auth method: private key` instruction. There is no clear solution to this, some reports point to the Microsoft Hyper-V and WSL2 conflicting with VirtualBox, others suggest adding cpus and other VM configs.
+
+### Possible solutions
+1. The solution might be [**_quite simple and stupid_**](https://github.com/hashicorp/vagrant/issues/11987#issuecomment-777256616) - when a VM is starting, **just make sure you have the VirtualBox GUI (window) open and select that specific VM that is trying to boot** (see the image below, click / select the VM currently hanging - in red, you should also see some activity under the preview screen - green).
+2. Other possible problem is a conflict with Hyper-V. Just open (search) the "Windows Features" / "Funcionalidades do Windows" option and deactivate Hyper-V. See https://stackoverflow.com/a/68788355/5145402
 
 ![VirtualBox stupid fix](./img/stupid_fix.png)
 
