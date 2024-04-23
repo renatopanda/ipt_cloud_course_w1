@@ -231,7 +231,7 @@ In multi-machine scenarios you need to add the VM name to specific commands. For
 ```bash
 vagrant up # launches all VMs
 vagrant suspend vm01 # suspends only vm01 (see VirtualBox)
-vagrant resume vm1 # resumes vm1 only
+vagrant resume vm01 # resumes vm01 only
 vagrant ssh vm02 # enters vm02, you should see vagrant@vm02:~$
 logout # exit vm02, back to host
 vagrant provision vm01 # rerun provision scripts on vm01
