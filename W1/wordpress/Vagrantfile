@@ -1,0 +1,45 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  # Configuration for web
+  config.vm.define "web" do |web|
+    web.vm.box = "bento/ubuntu-20.04"
+    web.vm.hostname = "web"
+    web.vm.network "private_network", ip: "192.168.33.10"
+    web.vm.provider "virtualbox" do |vb|
+      vb.name = "Cloud-W1-web"
+      vb.memory = "1024"
+      vb.cpus = 2
+      vb.customize ["modifyvm", :id, "--vram", "128"]
+      vb.linked_clone = true
+    end
+
+    # Provision block for web only
+    web.vm.provision "shell", path: "./install_web_server.sh"
+
+  end
+
+  # Configuration for db
+  config.vm.define "db" do |db|
+    db.vm.box = "bento/ubuntu-20.04"
+    db.vm.hostname = "db"
+    db.vm.network "private_network", ip: "192.168.33.20"
+    db.vm.provider "virtualbox" do |vb|
+      vb.name = "Cloud-W1-db"
+      vb.memory = "1024"
+      vb.cpus = 2
+      vb.customize ["modifyvm", :id, "--vram", "128"]
+      vb.linked_clone = true
+    end
+
+    # Provision block for db only using a shell script
+    db.vm.provision "shell", path: "./install_mysql.sh"
+    db.vm.provision "shell", path: "./setup_mysql.sh"
+    db.vm.provision "destroy_db", type: "shell", path: "./destroy_db.sh", run: "never"
+    # run the last with vagrant provision db --provision-with destroy_db
+
+  end
+  
+end
